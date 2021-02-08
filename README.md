@@ -1,4 +1,5 @@
-# vsc-sort-import README
+# vsc-sort-import
+A personal opinionated EcmaScript import sorting extension for VSCode.
 
 Thanks to [Renke Grunwald](https://github.com/renke)'s [nice work](https://github.com/renke/import-sort), it really save me a lot of time so that I can easily make this.
 
@@ -32,15 +33,15 @@ import foo from "./foo";
 
 modules having same hierarchy compose a group. For each group, the order is:
 
-1.  imports which have only namespace member
+1.  imports which have only namespace member  
     eg: `import * as fs from 'fs'`
-2.  imports which have only default member
+2.  imports which have only default member  
     eg: `import fs from 'fs'`
-3.  imports which have both default and namespace member
+3.  imports which have both default and namespace member  
     eg: `import foo, * as bar from 'foobar'`
-4.  imports which have both default and named member
+4.  imports which have both default and named member  
     eg: `import foo, { bar } from 'foobar'`
-5.  imports which have only named member
+5.  imports which have only named member  
     eg: `import { foo, bar } from 'foobar'`
 
 If the above rule didn't determine the order, then use the first member's name (not alias) to compare. For namespace member, the alias is regarded as its name. The comparison rule is:
@@ -49,10 +50,6 @@ If the above rule didn't determine the order, then use the first member's name (
 2. then follow the alphabetical order(in unicode)
 
 For imports having no member, sort them by module name with same rule.
-
-## Extension Settings
-
-None.
 
 ## Usage
 
@@ -66,12 +63,15 @@ This didn't be published to extension marketplace since it doesn't suitable for 
 ## Build
 
 clone this repo:
+
 > `git clone https://github.com/mattuylee/vsc-sort-import`
 
 change into repo directory and install dependencies:
+
 > `cd vsc-sort-import && npm install`
 
 package VSIX file:
+
 > `npx vsce package`
 
 ## Debug
