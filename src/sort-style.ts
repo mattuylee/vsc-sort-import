@@ -101,5 +101,9 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
       sort: [dotSegmentCount, memberOrModule(natural)],
       sortNamedMembers: name(natural),
     },
+    // add a blank line after import block
+    {
+      separator: true,
+    },
   ];
 }

@@ -77,3 +77,6 @@ package VSIX file:
 ## Debug
 
 After install dependencies, just press `F5` to start debugging. If some error occurs, it will be printed onto the output panel.
+
+## Change Log
+See [CHANGELOG.md](./CHANGELOG.md)

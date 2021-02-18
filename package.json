@@ -3,7 +3,7 @@
   "publisher": "mattuy",
   "displayName": "vsc-sort-import",
   "description": "A personal opinionated EcmaScript import sorting extension for VSCode.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "keywords": [
     "vscode",
     "javascript",
@@ -39,6 +39,7 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
+    "package": "vsce package",
     "pretest": "npm run compile",
     "test": "node ./out/test/runTest.js"
   },
