@@ -61,7 +61,7 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
         bIsStyle = /(css|scss|less)$/.test(b.moduleName);
       if (aIsStyle !== bIsStyle) {
         // place styles import later
-        return aIsStyle ? -1 : 1;
+        return aIsStyle ? 1 : -1;
       } else if (aHasOnlyNamespaceMember !== bHasOnlyNamespaceMember) {
         return aHasOnlyNamespaceMember ? -1 : 1;
       } else if (aHasOnlyDefaultMember !== bHasOnlyDefaultMember) {
