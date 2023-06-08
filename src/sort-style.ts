@@ -9,6 +9,8 @@ import { IImport } from "import-sort-parser";
 export default function (styleApi: IStyleAPI): IStyleItem[] {
   const {
     and,
+    or,
+    not,
     always,
     dotSegmentCount,
     isAbsoluteModule,
@@ -18,6 +20,10 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
     startsWithAlphanumeric,
     unicode,
   } = styleApi;
+
+  const isProjectAlias = (i: IImport) => {
+    return i.moduleName.startsWith('@/');
+  }
 
   // comparator function which place non-alphanumeric first
   const natural: IComparatorFunction = (a: string, b: string) => {
@@ -43,15 +49,20 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
         aHasOnlyDefaultMember =
           aHasDefaultMember && !aHasNamespaceMember && !aHasNamedMember,
         aHasOnlyNamespaceMember =
-          aHasNamespaceMember && !aHasDefaultMember && !aHasNamedMember;
+          aHasNamespaceMember && !aHasDefaultMember && !aHasNamedMember,
+        aIsStyle = /(css|scss|less)$/.test(a.moduleName);
       const bHasDefaultMember = Boolean(b.defaultMember),
         bHasNamespaceMember = Boolean(b.namespaceMember),
         bHasNamedMember = Boolean(b.namedMembers[0]?.name),
         bHasOnlyDefaultMember =
           bHasDefaultMember && !bHasNamespaceMember && !bHasNamedMember,
         bHasOnlyNamespaceMember =
-          bHasNamespaceMember && !bHasDefaultMember && !bHasNamedMember;
-      if (aHasOnlyNamespaceMember !== bHasOnlyNamespaceMember) {
+          bHasNamespaceMember && !bHasDefaultMember && !bHasNamedMember,
+        bIsStyle = /(css|scss|less)$/.test(b.moduleName);
+      if (aIsStyle !== bIsStyle) {
+        // place styles import later
+        return aIsStyle ? -1 : 1;
+      } else if (aHasOnlyNamespaceMember !== bHasOnlyNamespaceMember) {
         return aHasOnlyNamespaceMember ? -1 : 1;
       } else if (aHasOnlyDefaultMember !== bHasOnlyDefaultMember) {
         return aHasOnlyDefaultMember ? -1 : 1;
@@ -85,7 +96,13 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
     },
     // absolute
     {
-      match: isAbsoluteModule,
+      match: and(isAbsoluteModule, not(isProjectAlias)),
+      sort: memberOrModule(natural),
+      sortNamedMembers: name(natural),
+    },
+    // project alias
+    {
+      match: isProjectAlias,
       sort: memberOrModule(natural),
       sortNamedMembers: name(natural),
     },
