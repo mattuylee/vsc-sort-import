@@ -25,6 +25,11 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
     return i.moduleName.startsWith('@/');
   }
 
+  // eg: import 'foobar'
+  const isSideEffect = (i: IImport) => {
+    return !Boolean(i.defaultMember) && !Boolean(i.namespaceMember) && !Boolean(i.namedMembers[0]?.name)
+  }
+
   // comparator function which place non-alphanumeric first
   const natural: IComparatorFunction = (a: string, b: string) => {
     if (a === b) {
@@ -38,7 +43,8 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
       return sa ? 1 : -1;
     }
   };
-  // sort: use member primarily, if member is not avaliable, use module name
+
+  // sort: use member primarily, if member is not available, use module name
   const memberOrModule: (c: IComparatorFunction) => ISorterFunction = (
     comparator: IComparatorFunction
   ) => {
@@ -88,6 +94,15 @@ export default function (styleApi: IStyleAPI): IStyleItem[] {
   };
 
   return [
+    // side effect import
+    {
+      match: isSideEffect,
+      sort: memberOrModule(natural),
+      sortNamedMembers: name(natural),
+    },
+    {
+      separator: true,
+    },
     // built-in module, has member
     {
       match: isNodeModule,
