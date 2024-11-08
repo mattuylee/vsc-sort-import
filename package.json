@@ -18,6 +18,7 @@
     "url": "https://github.com/mattuylee/vsc-sort-import/issues"
   },
   "engines": {
+    "vscode": "^1.0.0",
     "node": "18"
   },
   "categories": [
