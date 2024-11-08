@@ -9,7 +9,6 @@ import { IImport } from "import-sort-parser";
 export default function (styleApi: IStyleAPI): IStyleItem[] {
   const {
     and,
-    or,
     not,
     always,
     dotSegmentCount,
